@@ -1,0 +1,4 @@
+{
+  "country_map": "https://android.googlesource.com/platform/frameworks/opt/telephony/+/refs/heads/main/src/java/com/android/internal/telephony/MccTable.java",
+  "carrier_map": "https://android.googlesource.com/platform/packages/providers/TelephonyProvider/+/refs/heads/main/assets/latest_carrier_id/carrier_list.textpb"
+}

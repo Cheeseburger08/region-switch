@@ -1,0 +1,9 @@
+{
+  "name": "region-switch-hooks",
+  "version": "1.3.0",
+  "private": true,
+  "description": "Per-app country hooks for Region Switch",
+  "license": "MIT",
+  "scripts": { "test": "node test-region-script.cjs" },
+  "dependencies": { "frida-java-bridge": "7.0.13" }
+}

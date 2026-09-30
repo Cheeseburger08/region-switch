@@ -1,0 +1,8 @@
+{
+  "count": 202,
+  "source_sha256": {
+    "MccTable.java": "68a2ed822151f0cdacc023fb924c1dff9bc7e913bcad5220dd1f42503e715840",
+    "carrier_list.textpb": "a6a8cc44afb9ad091bda816da98e546c0d8eac86851ee28656ee6802e5ca0825"
+  },
+  "representative_network_per_country": true
+}

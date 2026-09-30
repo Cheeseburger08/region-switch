@@ -1,0 +1,44 @@
+name: Build and check
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  android-and-hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install Android SDK
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Compile hooks and run checks
+        run: |
+          npm ci
+          python -m pip install -r requirements-build.txt
+          python build-script.py
+          npm test
+          python country-data/build_catalog.py
+          git diff --exit-code -- app/src/main/assets/countries.tsv country-data/catalog-metadata.json
+          mkdir -p build/catalog-test
+          javac -d build/catalog-test app/src/main/java/local/hessam/ukhooks/CountryProfile.java CountryCatalogCheck.java
+          java -cp build/catalog-test CountryCatalogCheck app/src/main/assets/countries.tsv
+      - name: Build APKs
+        run: ./gradlew --no-daemon :app:assembleDebug :probe:assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: region-switch-debug
+          path: |
+            app/build/outputs/apk/debug/*.apk
+            probe/build/outputs/apk/debug/*.apk
+            region.js
